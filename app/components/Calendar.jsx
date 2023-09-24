@@ -22,7 +22,6 @@ const Calendar = () => {
     } else {
       setMonth(month - 1);
     }
-    setSelectedDates(null);
   };
 
   const handleNextMonth = () => {
@@ -32,7 +31,6 @@ const Calendar = () => {
     } else {
       setMonth(month + 1);
     }
-    setSelectedDates(null);
   };
 
   const handleDateClick = (date) => {
@@ -56,7 +54,7 @@ const Calendar = () => {
       // Ngày chưa được chọn, thêm vào mảng selectedDates
       setSelectedDates([clickedDate]);
     }
-  };
+  };  
 
   const handleMonthClick = () => {
     setShowMonthDropdown(!showMonthDropdown);

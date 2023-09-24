@@ -31,7 +31,7 @@ export const renderCalendar = (month, year, selectedDates, handleDateClick) => {
 
   // Add cells for each day in the month
   for (let i = 1; i <= totalDays; i++) {
-    const isActive = selectedDates?.includes(i);
+    const isActive = selectedDates?.some((selectedDate) => selectedDate.toISOString().split('T')[0] === new Date(year, month - 1, i).toISOString().split('T')[0]);
     const classNames = `day ${isActive ? 'bg-blue-500 text-white shadow-lg' : ''}`;
 
     days.push(
@@ -54,6 +54,7 @@ export const renderCalendar = (month, year, selectedDates, handleDateClick) => {
 
   return days;
 };
+
 
 export const renderMonthDropdown = (showMonthDropdown, handleMonthSelect, selectedMonth) => {
   if (!showMonthDropdown) {

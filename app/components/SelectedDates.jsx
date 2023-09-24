@@ -7,7 +7,7 @@ const SelectedDates = ({ selectedDates }) => {
       <div className="w-full h-auto flex border">
         {selectedDates?.map((date) => (
           <div key={date} className="p-2">
-            {new Date(date).toLocaleDateString('en-US')}
+            {new Date(date).toLocaleDateString('vi-VN')}
           </div>
         ))}
       </div>
