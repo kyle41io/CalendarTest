@@ -51,7 +51,7 @@ const Calendar = ({locale="en-US", multiple, selectedDates, setSelectedDates, ha
       }
     } else {
       // multiple is false
-      setSelectedDates([clickedDate]);
+      setSelectedDates(clickedDate);
     }
 
   };

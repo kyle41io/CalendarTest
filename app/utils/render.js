@@ -19,11 +19,28 @@ export const renderCalendar = (month, year, selectedDates, handleDateClick) => {
 
   // Add cells for each day in the month
   for (let i = 1; i <= totalDays; i++) {
-    const isActive = selectedDates?.some((selectedDate) => selectedDate.toISOString().split('T')[0] === new Date(year, month - 1, i).toISOString().split('T')[0]);
+    let isActive = false;
+    if (Array.isArray(selectedDates)) {
+      isActive = selectedDates.some(
+        (selectedDate) =>
+          selectedDate.toISOString().split('T')[0] ===
+          new Date(year, month - 1, i).toISOString().split('T')[0]
+      );
+    } else {
+      const selectedDate = new Date(selectedDates);
+      isActive =
+        selectedDate.toISOString().split('T')[0] ===
+        new Date(year, month - 1, i).toISOString().split('T')[0];
+    }
+    
     const classNames = `day ${isActive ? 'bg-blue-500 text-white shadow-lg' : ''}`;
-
+  
     days.push(
-      <div key={i} className={`rounded-full m-1.5 p-1.5 text-center justify-center cursor-pointer hover:bg-slate-300 ${classNames}`} onClick={() => handleDateClick(i)}>
+      <div
+        key={i}
+        className={`rounded-full m-1.5 p-1.5 text-center justify-center cursor-pointer hover:bg-slate-300 ${classNames}`}
+        onClick={() => handleDateClick(i)}
+      >
         {i}
       </div>
     );
