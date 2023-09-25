@@ -1,10 +1,7 @@
-import { daysInMonth } from './constants';
+import { daysInMonth } from './index';
 import React from 'react';
-import { MONTHS, DAYS_OF_WEEK } from './constants';
 
 export const renderCalendar = (month, year, selectedDates, handleDateClick) => {
-  const firstDayOfMonth = 1;
-  const lastDayOfMonth = daysInMonth(month, year);
   const totalDays = daysInMonth(month, year);
   const firstDay = new Date(year, month - 1, 1).getDay();
   const days = [];

@@ -1,16 +1,15 @@
 import PrevIcon from '@/public/icons/PrevIcon';
 import NextIcon from '@/public/icons/NextIcon';
 import React, { useState } from 'react';
-import { YEARS } from '../utils/constants';
+import { YEARS } from '../utils/index';
 import { renderCalendar } from '../utils/render';
 import { getLocalizeMonth, getLocalizedDay } from '../utils';
 
-const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
+const Calendar = ({locale="en-US", multiple, selectedDates, setSelectedDates, handleToggle } ) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [multiple, setMultiple] = useState(false);
-  const localizedMonths = getLocalizeMonth(year, locale);
-  const localizedDays = getLocalizedDay(year, month, locale);
+  const localizedMonths = getLocalizeMonth( locale);
+  const localizedDays = getLocalizedDay(locale);
 
   const handlePrevMonth = () => {
     if (month === 1) {
@@ -19,7 +18,6 @@ const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
     } else {
       setMonth(month - 1);
     }
-    
   };
 
   const handleNextMonth = () => {
@@ -30,13 +28,6 @@ const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
       setMonth(month + 1);
     }
     
-  };
-
-  const handleToggle = () => {
-    setMultiple(!multiple);
-    if (!multiple) {
-      setSelectedDates([]);
-    }
   };
 
   const handleDateClick = (date) => {
@@ -74,7 +65,6 @@ const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
 
   const onChangeYear = (e) => {
     const selectedYear = parseInt(e.target.value, 10);
-    console.log(selectedYear);
     setYear(selectedYear);
   };
 

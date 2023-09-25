@@ -1,13 +1,13 @@
-export const YEARS = Array.from({ length: 2060 - 1960 }, (_, i) => i + 1960);
+export const YEARS = Array.from({ length: 2060 - 1940 }, (_, i) => i + 1940);
 
-export const compareMonth = (value, month) => {
-  return value.getMonth() + 1 === month;
+export const daysInMonth = (month, year) => {
+  return new Date(year, month, 0).getDate();
 };
 
-export const getLocalizeMonth = (year, locale) => {
+export const getLocalizeMonth = (locale) => {
   try {
     return Array.from({ length: 12 }, (_, i) => {
-      const date = new Date(year, i, 1);
+      const date = new Date(2000, i, 1);
       return date.toLocaleString(locale, {
         month: "long",
       });
@@ -17,11 +17,10 @@ export const getLocalizeMonth = (year, locale) => {
   }
 };
 
-export const getLocalizedDay = (year, month, locale) => {
+export const getLocalizedDay = (locale) => {
   try {
     return Array.from({ length: 7 }, (_, i) => {
-      const day = new Date(year, month, i + 1);
-
+      const day = new Date(2000, 0, i + 1);
       return day.toLocaleDateString(locale, {
         weekday: "short",
       });
