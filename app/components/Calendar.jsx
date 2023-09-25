@@ -4,7 +4,7 @@ import SelectIcon from '@/public/icons/SelectIcon';
 import React, { useState, useEffect } from 'react';
 import { MONTHS } from '../utils/constants';
 import SelectedDates from './SelectedDates';
-import { renderCalendar, renderMonthDropdown, renderYearDropdown} from '../utils/index';
+import { renderCalendar, renderMonthDropdown, renderYearDropdown} from '../utils/render';
 
 const Calendar = () => {
   const [year, setYear] = useState(new Date().getFullYear());
