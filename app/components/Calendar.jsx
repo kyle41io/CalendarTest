@@ -9,7 +9,6 @@ const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [multiple, setMultiple] = useState(false);
-  //const [selectedDates, setSelectedDates] = useState([]);
   const localizedMonths = getLocalizeMonth(year, locale);
   const localizedDays = getLocalizedDay(year, month, locale);
 
@@ -35,11 +34,9 @@ const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
 
   const handleToggle = () => {
     setMultiple(!multiple);
-    // Xóa các ngày đã chọn nếu multiple chuyển từ true sang false
     if (!multiple) {
       setSelectedDates([]);
     }
-    
   };
 
   const handleDateClick = (date) => {
@@ -47,25 +44,25 @@ const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
     const clickedDateString = clickedDate.toISOString().split('T')[0];
 
     if (multiple) {
-      // Xử lý khi multiple là true
+      // multiple is true
       const dateIndex = selectedDates.findIndex(
         (selectedDate) => selectedDate.toISOString().split('T')[0] === clickedDateString
       );
 
       if (dateIndex !== -1) {
-        // Ngày đã được chọn trước đó, xóa khỏi mảng selectedDates
+        // date have been chosen, delete from selectedDates
         const updatedDates = [...selectedDates];
         updatedDates.splice(dateIndex, 1);
         setSelectedDates(updatedDates);
       } else {
-        // Ngày chưa được chọn, thêm vào mảng selectedDates
+        // date haven't been chosen, add to selectedDates
         setSelectedDates([...selectedDates, clickedDate]);
       }
     } else {
-      // Xử lý khi multiple là false
+      // multiple is false
       setSelectedDates([clickedDate]);
     }
-    
+
   };
 
   const onChangeMonth = (e) => {
@@ -140,9 +137,8 @@ const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
         </div>
         <div className="grid gap-1 grid-cols-7">
         {renderCalendar(month, year, selectedDates, handleDateClick)}
+        </div>
       </div>
-      </div>
-        {/* <SelectedDates selectedDates={selectedDates} /> */}
     </>
   );
 };
