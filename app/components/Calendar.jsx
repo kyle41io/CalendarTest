@@ -1,19 +1,20 @@
 import PrevIcon from '@/public/icons/PrevIcon';
 import NextIcon from '@/public/icons/NextIcon';
-import SelectIcon from '@/public/icons/SelectIcon';
-import React, { useState, useEffect } from 'react';
-import { MONTHS } from '../utils/constants';
+import React, { useState } from 'react';
+import { YEARS } from '../utils/constants';
 import SelectedDates from './SelectedDates';
-import { renderCalendar, renderMonthDropdown, renderYearDropdown} from '../utils/render';
+import { renderCalendar } from '../utils/render';
+import { getLocalizeMonth, getLocalizedDay } from '../utils';
 
-const Calendar = () => {
+const Calendar = ({ multiple, selectedDates, setSelectedDates }) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [showMonthDropdown, setShowMonthDropdown] = useState(false);
-  const [showYearDropdown, setShowYearDropdown] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(month);
-  const [selectedYear, setSelectedYear] = useState(year);
-  const [selectedDates, setSelectedDates] = useState([]);
+  const [isMultiple, setIsMultiple] = useState(multiple);
+
+  const locale = navigator.language || navigator.userLanguage;
+
+  const localizedMonths = getLocalizeMonth(year, locale);
+  const localizedDays = getLocalizedDay(year, month, locale);
 
   const handlePrevMonth = () => {
     if (month === 1) {
@@ -33,14 +34,24 @@ const Calendar = () => {
     }
   };
 
+  const handleToggle = () => {
+    setIsMultiple(!isMultiple);
+    // Xóa các ngày đã chọn nếu multiple chuyển từ true sang false
+    if (!isMultiple) {
+      setSelectedDates([]);
+    }
+  };
+
   const handleDateClick = (date) => {
     const clickedDate = new Date(year, month - 1, date);
     const clickedDateString = clickedDate.toISOString().split('T')[0];
 
-    if (selectedDates !== null) {
+    if (isMultiple) {
+      // Xử lý khi multiple là true
       const dateIndex = selectedDates.findIndex(
         (selectedDate) => selectedDate.toISOString().split('T')[0] === clickedDateString
       );
+
       if (dateIndex !== -1) {
         // Ngày đã được chọn trước đó, xóa khỏi mảng selectedDates
         const updatedDates = [...selectedDates];
@@ -51,50 +62,87 @@ const Calendar = () => {
         setSelectedDates([...selectedDates, clickedDate]);
       }
     } else {
-      // Ngày chưa được chọn, thêm vào mảng selectedDates
+      // Xử lý khi multiple là false
       setSelectedDates([clickedDate]);
     }
-  };  
+  };
 
-  const handleMonthClick = () => {
-    setShowMonthDropdown(!showMonthDropdown);
-    setSelectedMonth(month);
+  const onChangeMonth = (e) => {
+    const selectedMonthIndex = localizedMonths.indexOf(e.target.value);
+    if (selectedMonthIndex !== -1) {
+      setMonth(selectedMonthIndex + 1);
+    }
   };
-  
-  const handleYearClick = () => {
-    setShowYearDropdown(!showYearDropdown);
-    setSelectedYear(year);
-  };
-  
-  const handleMonthSelect = (selectedMonth) => {
-    setMonth(selectedMonth);
-    setShowMonthDropdown(false);
-    setSelectedDates(null);
-    setSelectedMonth(selectedMonth);
-  };
-  
-  const handleYearSelect = (selectedYear) => {
+
+  const onChangeYear = (e) => {
+    const selectedYear = parseInt(e.target.value, 10);
+    console.log(selectedYear);
     setYear(selectedYear);
-    setShowYearDropdown(false);
-    setSelectedDates(null);
-    setSelectedYear(selectedYear);
   };
+
   return (
     <>
       <div className="w-96 border-[2px] p-4 rounded-md bg-gray-100 shadow-lg">
-        <h1 className='font-bold text-xl mb-4'>Calendar</h1>
-        <div className="flex justify-between mb-3">
-          <button onClick={handlePrevMonth}><PrevIcon /></button>
-          <div className="relative flex font-bold text-lg rounded-md border-2 p-1 pl-2 cursor-pointer" onClick={handleMonthClick}>{`${MONTHS[month - 1]}`}{renderMonthDropdown(showMonthDropdown, handleMonthSelect,selectedMonth)} <SelectIcon /></div>
-          <div className="relative flex font-bold text-lg rounded-md border-2 p-1 pl-2 cursor-pointer" onClick={handleYearClick}>{`${year}`}{renderYearDropdown(showYearDropdown, handleYearSelect, selectedYear)} <SelectIcon /></div>
-
-          <button onClick={handleNextMonth}><NextIcon /></button>
+        <div className="flex justify-between">
+          <h1 className="font-bold text-xl mb-4">Calendar</h1>
+          <label htmlFor="toggle" className="flex items-center cursor-pointer">
+            <span className="mr-2">Multiple:</span>
+            <input
+              id="toggle"
+              type="checkbox"
+              className="form-checkbox h-5 w-5 text-blue-500"
+              checked={multiple}
+              onChange={handleToggle}
+            />
+          </label>
         </div>
-        <div className="grid gap-1 grid-cols-7">{renderCalendar(month, year, selectedDates, handleDateClick)}</div>
+        <div className="flex justify-between mb-3">
+          <button onClick={handlePrevMonth}>
+            <PrevIcon />
+          </button>
+          <div className="relative flex font-bold text-lg rounded-md">
+            <select
+              className="rounded-md border bg-slate-100 p-2 mr-2 ml-4 cursor-pointer"
+              value={localizedMonths[month - 1]}
+              onChange={onChangeMonth}
+            >
+              {localizedMonths.map((localizedMonth, index) => (
+                <option key={index} value={localizedMonth}>
+                  {localizedMonth}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="relative flex font-bold text-lg rounded-md">
+            <select
+              className="rounded-md border bg-slate-100 p-2 mr-4 ml-2 cursor-pointer"
+              value={year}
+              onChange={onChangeYear}
+            >
+              {YEARS.map((year, index) => (
+                <option key={index} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button onClick={handleNextMonth}>
+            <NextIcon />
+          </button>
+        </div>
+        <div className="grid grid-cols-7 text-center items-center justify-around py-4">
+          {localizedDays.map((localizedDay, index) => (
+            <div key={index} className="font-bold">
+              {localizedDay}
+            </div>
+          ))}
+        </div>
+        <div className="grid gap-1 grid-cols-7">
+        {renderCalendar(month, year, selectedDates, handleDateClick)}
       </div>
-      <SelectedDates selectedDates={selectedDates} />
+      </div>
+        {/* <SelectedDates selectedDates={selectedDates} /> */}
     </>
-    
   );
 };
 
