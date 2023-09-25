@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import Calendar from './components/Calendar';
 import SelectedDates from './components/SelectedDates';
 
-
 export default function Home() {
-  const locale = navigator.language || navigator.userLanguage ;
+  const [locale, setLocale] = useState();
   const [selectedDates, setSelectedDates] = useState([]);
   const [multiple, setMultiple] = useState(false);
 
