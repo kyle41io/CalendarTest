@@ -2,17 +2,14 @@ import PrevIcon from '@/public/icons/PrevIcon';
 import NextIcon from '@/public/icons/NextIcon';
 import React, { useState } from 'react';
 import { YEARS } from '../utils/constants';
-import SelectedDates from './SelectedDates';
 import { renderCalendar } from '../utils/render';
 import { getLocalizeMonth, getLocalizedDay } from '../utils';
 
-const Calendar = ({ multiple, selectedDates, setSelectedDates }) => {
+const Calendar = ({ locale, selectedDates, setSelectedDates } ) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [isMultiple, setIsMultiple] = useState(multiple);
-
-  const locale = navigator.language || navigator.userLanguage;
-
+  const [multiple, setMultiple] = useState(false);
+  //const [selectedDates, setSelectedDates] = useState([]);
   const localizedMonths = getLocalizeMonth(year, locale);
   const localizedDays = getLocalizedDay(year, month, locale);
 
@@ -23,6 +20,7 @@ const Calendar = ({ multiple, selectedDates, setSelectedDates }) => {
     } else {
       setMonth(month - 1);
     }
+    
   };
 
   const handleNextMonth = () => {
@@ -32,21 +30,23 @@ const Calendar = ({ multiple, selectedDates, setSelectedDates }) => {
     } else {
       setMonth(month + 1);
     }
+    
   };
 
   const handleToggle = () => {
-    setIsMultiple(!isMultiple);
+    setMultiple(!multiple);
     // Xóa các ngày đã chọn nếu multiple chuyển từ true sang false
-    if (!isMultiple) {
+    if (!multiple) {
       setSelectedDates([]);
     }
+    
   };
 
   const handleDateClick = (date) => {
     const clickedDate = new Date(year, month - 1, date);
     const clickedDateString = clickedDate.toISOString().split('T')[0];
 
-    if (isMultiple) {
+    if (multiple) {
       // Xử lý khi multiple là true
       const dateIndex = selectedDates.findIndex(
         (selectedDate) => selectedDate.toISOString().split('T')[0] === clickedDateString
@@ -65,6 +65,7 @@ const Calendar = ({ multiple, selectedDates, setSelectedDates }) => {
       // Xử lý khi multiple là false
       setSelectedDates([clickedDate]);
     }
+    
   };
 
   const onChangeMonth = (e) => {
