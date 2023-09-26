@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Calendar multiple={multiple} locale={locale} selectedDates={selectedDates} setSelectedDates={setSelectedDates} handleToggle={handleToggle} />
+      <Calendar multiple={multiple} selectedDates={selectedDates} setSelectedDates={setSelectedDates} handleToggle={handleToggle} />
       <SelectedDates selectedDates={selectedDates} locale={locale} />
     </main>
   );
