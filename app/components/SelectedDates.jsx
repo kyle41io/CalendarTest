@@ -33,7 +33,7 @@ const SelectedDates = ({selectedDates, handleShowCalendar}) => {
         <button onClick={handleShowCalendar}>
           <CalendarIcon />
         </button>
-        <div className="w-80 h-auto flex overflow-auto">
+        <div className="w-[350px] h-auto flex overflow-auto">
           {dates.map((date) => (
             <div key={date} className="px-2">
               {new Date(date).toLocaleDateString(formatDate)}
