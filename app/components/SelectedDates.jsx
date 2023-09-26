@@ -26,8 +26,8 @@ const SelectedDates = ({selectedDates, handleShowCalendar}) => {
       <select
         className=" cursor-pointer text-sm" onChange={onChangeFormatDate}
       >
-        <option value="1">MM/DD/YY</option>
-        <option value="2">DD/MM/YY</option>
+        <option value="1">MM/DD/YYYY</option>
+        <option value="2">DD/MM/YYYY</option>
       </select>
       <div className="flex border p-1">
         <button onClick={handleShowCalendar}>

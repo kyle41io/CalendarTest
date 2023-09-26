@@ -34,7 +34,7 @@ export const renderCalendar = (month, year, selectedDates, handleDateClick) => {
         new Date(year, month - 1, i).toISOString().split('T')[0];
     }
     
-    const classNames = `day ${isActive ? 'bg-blue-500 text-white shadow-lg' : ''}`;
+    const classNames = `day ${isActive ? '!bg-blue-500 !text-white !shadow-lg' : ''}`;
   
     days.push(
       <div

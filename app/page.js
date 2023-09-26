@@ -9,7 +9,6 @@ export default function Home() {
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
 
-
   const handleToggle = () => {
     setMultiple(!multiple);
     if (!multiple) {
@@ -17,10 +16,7 @@ export default function Home() {
     }
   };
 
-   const handleShowCalendar = () => {
-    if (showCalendar === true) {
-      setSelectedDates([]);
-    }
+  const handleShowCalendar = () => {
     setShowCalendar(!showCalendar);
   };
 
@@ -28,12 +24,9 @@ export default function Home() {
     const handleClickOutside = (event) => {
       if (calendarRef.current && !calendarRef.current.contains(event.target)) {
         setShowCalendar(false);
-        setSelectedDates([]);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -41,8 +34,8 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
-      <div ref={calendarRef}>
-        <SelectedDates selectedDates={selectedDates} handleShowCalendar={handleShowCalendar} />
+      <div>
+        <SelectedDates  selectedDates={selectedDates} handleShowCalendar={handleShowCalendar} />
       </div>
       {showCalendar && (
         <div ref={calendarRef}>
