@@ -26,8 +26,8 @@ export const getLocalizedDay = (locale) => {
       });
     });
 
-    const sunday = days.shift(); 
-    days.push(sunday); 
+    const saturday = days.shift(); 
+    days.push(saturday);
 
     return days;
   } catch (error) {
