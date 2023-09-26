@@ -5,7 +5,7 @@ import { YEARS } from '../utils/index';
 import { renderCalendar } from '../utils/render';
 import { getLocalizeMonth, getLocalizedDay } from '../utils';
 
-const Calendar = ({locale="en-US", multiple, selectedDates, setSelectedDates, handleToggle } ) => {
+const Calendar = ({locale="en-US", multiple=false, selectedDates, setSelectedDates, handleToggle } ) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const localizedMonths = getLocalizeMonth( locale);

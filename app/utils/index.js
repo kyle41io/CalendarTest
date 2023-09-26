@@ -19,12 +19,17 @@ export const getLocalizeMonth = (locale) => {
 
 export const getLocalizedDay = (locale) => {
   try {
-    return Array.from({ length: 7 }, (_, i) => {
+    const days = Array.from({ length: 7 }, (_, i) => {
       const day = new Date(2000, 0, i + 1);
       return day.toLocaleDateString(locale, {
         weekday: "short",
       });
     });
+
+    const sunday = days.shift(); 
+    days.push(sunday); 
+
+    return days;
   } catch (error) {
     console.log(error);
   }
