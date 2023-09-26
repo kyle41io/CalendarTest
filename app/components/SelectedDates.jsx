@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import CalendarIcon from '@/public/icons/CalendarIcon';
 
-const SelectedDates = ({ selectedDates, locale }) => {
+const SelectedDates = ({selectedDates, handleShowCalendar}) => {
+  const [formatDate, setFormatDate] = useState('en-US');
+
+  const onChangeFormatDate = (event) => {
+    const selectedValue = event.target.value;
+    if (selectedValue === '1') {
+      setFormatDate('en-US');
+    } else if (selectedValue === '2') {
+      setFormatDate('vi-VN');
+    }
+  };
+
   let dates = [];
 
   if (Array.isArray(selectedDates)) {
@@ -11,14 +23,26 @@ const SelectedDates = ({ selectedDates, locale }) => {
 
   return (
     <div className='flex-col justify-center items-center'>
-      <div className="text-xl font-semibold my-4 text-center">Các ngày đã chọn</div>
-      <div className="w-full h-auto flex border">
-        {dates.map((date) => (
-          <div key={date} className="p-2">
-            {new Date(date).toLocaleDateString(locale)}
-          </div>
-        ))}
+      <select
+        className=" cursor-pointer text-sm" onChange={onChangeFormatDate}
+      >
+        <option value="1">MM/DD/YY</option>
+        <option value="2">DD/MM/YY</option>
+      </select>
+      <div className="flex border p-1">
+        <button onClick={handleShowCalendar}>
+          <CalendarIcon />
+        </button>
+        <div className="w-80 h-auto flex overflow-auto">
+          {dates.map((date) => (
+            <div key={date} className="px-2">
+              {new Date(date).toLocaleDateString(formatDate)}
+            </div>
+          ))}
+        </div>
       </div>
+      
+      
     </div>
   );
 };

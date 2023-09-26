@@ -19,6 +19,7 @@ export const renderCalendar = (month, year, selectedDates, handleDateClick) => {
 
   // Add cells for each day in the month
   for (let i = 1; i <= totalDays; i++) {
+    
     let isActive = false;
     if (Array.isArray(selectedDates)) {
       isActive = selectedDates.some(
